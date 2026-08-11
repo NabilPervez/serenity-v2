@@ -143,7 +143,7 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <p style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
-            {status === 'complete' ? 'Session Complete \ud83c\udf3f' : status === 'idle' ? 'Ready to begin' : status === 'paused' ? 'Paused' : `Cycle ${cycle} of ${TOTAL_CYCLES}`}
+            {status === 'complete' ? 'Session Complete \uD83C\uDF3F' : status === 'idle' ? 'Ready to begin' : status === 'paused' ? 'Paused' : `Cycle ${cycle} of ${TOTAL_CYCLES}`}
           </p>
           <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '1.75rem', fontWeight: 800, color: isActive ? phaseColor : 'var(--color-on-surface)' }}>
             {status === 'complete' ? 'Well done.' : status === 'idle' ? 'Center yourself' : phase.label}
@@ -155,9 +155,9 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
           <div style={circleStyle}>
             <div className="breathing-inner" style={{ borderColor: `${phaseColor}25`, width: 164, height: 164 }}>
               {status === 'idle' ? (
-                <><span style={{ fontSize: '2.25rem' }}>\ud83c\udf2c\ufe0f</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Let's breathe</span></>
+                <><span style={{ fontSize: '2.25rem' }}>{'\ud83c\udf2c\ufe0f'}</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Let's breathe</span></>
               ) : status === 'complete' ? (
-                <><span style={{ fontSize: '2.25rem' }}>\ud83c\udf3f</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Beautiful</span></>
+                <><span style={{ fontSize: '2.25rem' }}>{'\ud83c\udf3f'}</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Beautiful</span></>
               ) : (
                 <><span className="breathing-phase-text" style={{ color: phaseColor }}>{phase.label}</span><span className="breathing-count">{countdown}s</span></>
               )}
@@ -166,7 +166,7 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
           {isActive && (
             <div style={{ position: 'absolute', top: '-40px', right: '-30px', padding: '0.7rem 0.9rem', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-card)', border: '1px solid rgba(197,200,188,0.2)' }}>
               <p style={{ fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.6rem', marginBottom: '0.125rem' }}>Coming next</p>
-              <p style={{ fontWeight: 500, color: 'var(--color-on-surface)', fontSize: '0.75rem' }}>{nextPhase.label} \u00b7 {nextPhase.seconds}s</p>
+              <p style={{ fontWeight: 500, color: 'var(--color-on-surface)', fontSize: '0.75rem' }}>{nextPhase.label} {'\u00b7'} {nextPhase.seconds}s</p>
             </div>
           )}
         </div>

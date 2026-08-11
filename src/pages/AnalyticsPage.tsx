@@ -139,7 +139,7 @@ export default function AnalyticsPage() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
                         <div style={{ fontSize: '1.2rem' }}>{entry.moodIcon}</div>
                         <div style={{ flex: 1 }}>
-                          <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>{entry.mood} \u00b7 {entry.anxietyLevel}/10</h4>
+                          <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>{entry.mood} {'\u00b7'} {entry.anxietyLevel}/10</h4>
                           <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--color-outline)' }}>
                             {formatEntryDate(entry.timestamp)}, {formatTime(entry.timestamp)}
                           </p>
