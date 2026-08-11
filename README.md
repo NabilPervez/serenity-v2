@@ -72,3 +72,4 @@ Serenity app (101 affirmations, 26 coping skills — counts verified).
 - `npx eslint .` — clean
 - `npx vite build` — succeeds, service worker + manifest generated
 # serenity-v2
+# serenity-v2
