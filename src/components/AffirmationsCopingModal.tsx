@@ -48,7 +48,11 @@ export default function AffirmationsCopingModal() {
 
       {tab === 'affirmations' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', maxHeight: 420, overflowY: 'auto' }}>
-          {AFFIRMATIONS.map((aff) => {
+          {[...AFFIRMATIONS].sort((a, b) => {
+            const aChecked = favoriteAffirmationIds.includes(a.id);
+            const bChecked = favoriteAffirmationIds.includes(b.id);
+            return (aChecked === bChecked) ? 0 : aChecked ? -1 : 1;
+          }).map((aff) => {
             const checked = favoriteAffirmationIds.includes(aff.id);
             return (
               <label key={aff.id} className={`check-item${checked ? ' checked' : ''}`} htmlFor={`aff-${aff.id}`}>
@@ -60,7 +64,11 @@ export default function AffirmationsCopingModal() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: 420, overflowY: 'auto' }}>
-          {COPING_SKILLS.map((skill) => {
+          {[...COPING_SKILLS].sort((a, b) => {
+            const aChecked = favoriteCopingSkillIds.includes(a.id);
+            const bChecked = favoriteCopingSkillIds.includes(b.id);
+            return (aChecked === bChecked) ? 0 : aChecked ? -1 : 1;
+          }).map((skill) => {
             const checked = favoriteCopingSkillIds.includes(skill.id);
             return (
               <div

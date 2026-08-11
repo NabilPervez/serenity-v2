@@ -369,7 +369,7 @@ h1, h2, h3, h4, h5, h6 {
 .check-item:hover { opacity: 0.85; }
 
 .check-item.checked {
-  opacity: 0.65;
+  opacity: 1;
 }
 
 .check-item input[type="checkbox"] {
@@ -411,8 +411,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .check-item.checked .check-label {
-  text-decoration: line-through;
-  color: var(--color-on-surface-variant);
+  font-weight: bold;
+  color: var(--color-on-surface);
 }
 
 /* ── Progress Ring ── */
@@ -889,12 +889,12 @@ textarea::placeholder {
 }
 
 .coping-card.checked {
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .coping-card.checked .coping-title {
-  text-decoration: line-through;
-  color: var(--color-on-surface-variant);
+  font-weight: bold;
+  color: var(--color-on-surface);
 }
 
 /* ── Bedtime Card ── */
