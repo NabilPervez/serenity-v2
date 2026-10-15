@@ -10,6 +10,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { to: '/checklist', icon: 'fact_check', label: 'Checklist' },
   { to: '/tools', icon: 'spa', label: 'Tools' },
+  { to: '/story', icon: 'auto_stories', label: 'Story' },
   { to: '/analytics', icon: 'monitoring', label: 'Analytics' },
 ];
 

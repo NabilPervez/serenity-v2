@@ -73,3 +73,21 @@ Serenity app (101 affirmations, 26 coping skills — counts verified).
 - `npx vite build` — succeeds, service worker + manifest generated
 # serenity-v2
 # serenity-v2
+
+**Sprints 5–8 — Story Pillars (Reframe · Effort Ledger · Four Pillars)**
+A new **Story** tab (`/story`) holds three pages built around the "four
+pillars of happiness" (Community, Purpose, Charity, Storytelling):
+
+- `/story/reframe` — 4-step flow: old story → my part (effort, emotions,
+  outlook) → Allah's part → new story, with a verse on mercy and a
+  before/after intensity rating. History shows old/new story pairs.
+- `/story/ledger` — nightly efforts (1–3), one thing handed over to Allah,
+  a dua, and the existing Box Breathing in a modal.
+- `/story/pillars` — weekly Community / Purpose / Charity prompts plus a
+  one-line headline; headlines become exportable "chapters".
+
+Data: Dexie `version(2)` adds `reframes`, `efforts`, and `pillarWeeks`
+(additive; v1 tables untouched). Content lives in `src/data/storyContent.ts`.
+Its English renderings are meaning-based, so **verify each verse and dua
+against a trusted source**. Styles are in `src/story.css` (flexbox only,
+existing tokens). By design, there are no streaks or scores on Story pages.

@@ -5,6 +5,11 @@ import AppShell from './components/AppShell';
 import ChecklistPage from './pages/ChecklistPage';
 import ToolsPage from './pages/ToolsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import StoryHubPage from './pages/story/StoryHubPage';
+import ReframePage from './pages/story/ReframePage';
+import LedgerPage from './pages/story/LedgerPage';
+import PillarsPage from './pages/story/PillarsPage';
+import './story.css';
 import { initGlobalButtonSounds } from './utils/audio';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
@@ -36,6 +41,10 @@ export default function App() {
           <Route path="/checklist" element={<PageTransition><ChecklistPage /></PageTransition>} />
           <Route path="/tools" element={<PageTransition><ToolsPage /></PageTransition>} />
           <Route path="/analytics" element={<PageTransition><AnalyticsPage /></PageTransition>} />
+          <Route path="/story" element={<PageTransition><StoryHubPage /></PageTransition>} />
+          <Route path="/story/reframe" element={<PageTransition><ReframePage /></PageTransition>} />
+          <Route path="/story/ledger" element={<PageTransition><LedgerPage /></PageTransition>} />
+          <Route path="/story/pillars" element={<PageTransition><PillarsPage /></PageTransition>} />
           <Route path="*" element={<Navigate to="/checklist" replace />} />
         </Routes>
       </AnimatePresence>

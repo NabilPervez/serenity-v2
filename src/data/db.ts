@@ -18,15 +18,62 @@ export interface CheckIn {
   notes: string;
 }
 
+/** Story › Reframe: one harsh thought rewritten into a merciful one. */
+export interface Reframe {
+  id?: number;
+  timestamp: number;
+  date: string;
+  oldStory: string;
+  intensityBefore: number;
+  myPartTags: string[];
+  myPart: string;
+  allahsPart: string;
+  newStory: string;
+  intensityAfter: number;
+  verseId: string;
+}
+
+/** Story › Effort Ledger: one row per night. */
+export interface EffortNight {
+  id?: number;
+  date: string;
+  entries: string[];
+  handedOver: string;
+  duaId: string;
+  createdAt: number;
+}
+
+/** Story › Four Pillars: one row per ISO week (Monday). */
+export interface PillarWeek {
+  id?: number;
+  weekStart: string;
+  community: string;
+  purpose: string;
+  charity: string;
+  headline: string;
+  createdAt: number;
+}
+
 class SerenityDB extends Dexie {
   checklistDays!: Table<ChecklistDay>;
   checkIns!: Table<CheckIn>;
+  reframes!: Table<Reframe>;
+  efforts!: Table<EffortNight>;
+  pillarWeeks!: Table<PillarWeek>;
 
   constructor() {
     super('SerenityV2DB');
     this.version(1).stores({
       checklistDays: '++id, date',
       checkIns: '++id, timestamp, date',
+    });
+    // v2 — additive: Story pages. v1 tables untouched.
+    this.version(2).stores({
+      checklistDays: '++id, date',
+      checkIns: '++id, timestamp, date',
+      reframes: '++id, timestamp, date',
+      efforts: '++id, &date',
+      pillarWeeks: '++id, &weekStart',
     });
   }
 }
@@ -67,4 +114,25 @@ export async function getRecentCheckIns(limit = 100): Promise<CheckIn[]> {
 
 export async function getAllCheckIns(): Promise<CheckIn[]> {
   return db.checkIns.orderBy('timestamp').reverse().toArray();
+}
+
+// ── Helpers: Story ──────────────────────────────────────
+
+export const addReframe = (r: Omit<Reframe, 'id'>) => db.reframes.add(r);
+export const getAllReframes = () => db.reframes.orderBy('timestamp').reverse().toArray();
+
+export const getEffortNight = (date: string) => db.efforts.where('date').equals(date).first();
+export const getAllEffortNights = () => db.efforts.orderBy('date').reverse().toArray();
+export async function saveEffortNight(n: Omit<EffortNight, 'id'>): Promise<void> {
+  const existing = await getEffortNight(n.date);
+  if (existing?.id) await db.efforts.update(existing.id, n);
+  else await db.efforts.add(n);
+}
+
+export const getPillarWeek = (weekStart: string) => db.pillarWeeks.where('weekStart').equals(weekStart).first();
+export const getAllPillarWeeks = () => db.pillarWeeks.orderBy('weekStart').reverse().toArray();
+export async function savePillarWeek(w: Omit<PillarWeek, 'id'>): Promise<void> {
+  const existing = await getPillarWeek(w.weekStart);
+  if (existing?.id) await db.pillarWeeks.update(existing.id, w);
+  else await db.pillarWeeks.add(w);
 }
