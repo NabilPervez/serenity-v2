@@ -35,6 +35,12 @@ export default function App() {
     return cleanup;
   }, []);
 
+  // Every new screen starts at the top
+  useEffect(() => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, [location.pathname]);
+
   return (
     <AppShell>
       <AnimatePresence mode="wait">

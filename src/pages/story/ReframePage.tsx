@@ -20,6 +20,7 @@ function Slider({ value, onChange, label }: { value: number; onChange: (n: numbe
 
 export default function ReframePage() {
   const [step, setStep] = useState(0);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [step]);
   const [oldStory, setOldStory] = useState('');
   const [before, setBefore] = useState(7);
   const [tags, setTags] = useState<string[]>([]);
