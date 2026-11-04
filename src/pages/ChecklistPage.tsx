@@ -6,6 +6,9 @@ import { useToast } from '../hooks/useToast';
 import { useAppStore, getTodayDateString } from '../store/useAppStore';
 import { CHECKLIST_TASKS, TASKS_BY_PHASE, PHASE_META, type Phase } from '../data/checklist';
 import { getChecklistDay, saveChecklistDay } from '../data/db';
+import Modal from '../components/Modal';
+import EmotionalCheckIn from '../components/EmotionalCheckIn';
+import '../present.css';
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -16,6 +19,12 @@ function getGreeting(): string {
 
 const PHASES: Phase[] = ['morning', 'afternoon', 'evening'];
 
+/** Current phase by clock — shown first and open; the rest collapse (Nabil, 2026-11-03). */
+function currentPhase(): Phase {
+  const h = new Date().getHours();
+  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+
 export default function ChecklistPage() {
   const { currentStreak, updateStreak } = useAppStore();
   const { toast, showToast } = useToast();
@@ -23,6 +32,11 @@ export default function ChecklistPage() {
   const [completed, setCompleted] = useState<string[]>([]);
   const [dayId, setDayId] = useState<number | undefined>(undefined);
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+  const [nowPhase] = useState<Phase>(currentPhase);
+  const [openPhases, setOpenPhases] = useState<Phase[]>(() => [currentPhase()]);
+  const [checkIn, setCheckIn] = useState(false);
+  const orderedPhases = [nowPhase, ...PHASES.filter((p) => p !== nowPhase)];
+  const togglePhase = (p: Phase) => setOpenPhases((o) => (o.includes(p) ? o.filter((x) => x !== p) : [...o, p]));
   const today = getTodayDateString();
 
   useEffect(() => {
@@ -56,16 +70,13 @@ export default function ChecklistPage() {
   const completedCount = completed.length;
   const progressPct = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
 
-  const radius = 40;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDash = circumference - (progressPct / 100) * circumference;
 
   return (
     <>
       <Toast message={toast.message} show={toast.show} />
 
       <TopBar
-        title={`${getGreeting()}`}
+        title="Today"
         icon="fact_check"
         right={
           currentStreak > 0 ? (
@@ -78,52 +89,62 @@ export default function ChecklistPage() {
       />
 
       <div className="page-content">
-        {/* Overall progress */}
-        <section className="card animate-fade-up" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', right: '-16px', top: '-16px', width: '128px', height: '128px', background: 'rgba(156, 175, 136, 0.08)', borderRadius: '50%', filter: 'blur(24px)' }} />
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '24px', fontWeight: 600, color: 'var(--color-on-surface)', marginBottom: '0.375rem' }}>
-              Today's Action Plan
-            </h2>
-            <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '16px' }}>
-              {progressPct === 100 ? '\ud83c\udf89 Every step complete — well done today.' : progressPct > 50 ? "You're more than halfway there." : "Let's reset your nervous system, step by step."}
-            </p>
+        <header className="pr-hero animate-fade-up" style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0 }}>
+            <h1 className="pr-h1">{getGreeting()}. <span>{progressPct === 100 ? 'All done today.' : 'One step at a time.'}</span></h1>
+            <p className="pr-lede">{completedCount} of {totalTasks} steps done today.</p>
           </div>
-          <div className="progress-ring-container" style={{ width: 88, height: 88, flexShrink: 0 }}>
-            <svg width="88" height="88" style={{ transform: 'rotate(-90deg)' }}>
-              <circle cx="44" cy="44" r={radius} fill="transparent" stroke="var(--color-surface-container-high)" strokeWidth="8" />
-              <circle
-                cx="44" cy="44" r={radius} fill="transparent"
-                stroke="var(--color-primary-container)" strokeWidth="8"
-                strokeDasharray={circumference} strokeDashoffset={strokeDash} strokeLinecap="round"
-                style={{ transition: 'stroke-dashoffset 0.6s var(--ease-standard)' }}
-              />
+          <div className="progress-ring-container" style={{ width: 72, height: 72, flexShrink: 0 }}>
+            <svg width="72" height="72" style={{ transform: 'rotate(-90deg)' }} aria-hidden="true">
+              <circle cx="36" cy="36" r="32" fill="transparent" stroke="var(--hairline)" strokeWidth="3" />
+              <circle cx="36" cy="36" r="32" fill="transparent" stroke="var(--sage-600)" strokeWidth="3"
+                strokeDasharray={2 * Math.PI * 32} strokeDashoffset={2 * Math.PI * 32 * (1 - progressPct / 100)} strokeLinecap="round"
+                style={{ transition: 'stroke-dashoffset 0.9s var(--ease-standard)' }} />
             </svg>
-            <span className="progress-ring-text" style={{ fontSize: '16px' }}>{progressPct}%</span>
+            <span className="progress-ring-text" style={{ fontSize: '14px' }}>{progressPct}%</span>
           </div>
-        </section>
+        </header>
 
-        {PHASES.map((phase, phaseIdx) => {
+        <nav className="today-actions" aria-label="Quick actions">
+          <button className="today-action" onClick={() => setCheckIn(true)}>
+            <span className="material-symbols-outlined" aria-hidden="true">favorite</span>Check in
+          </button>
+          <Link className="today-action" to="/practice?open=breathe">
+            <span className="material-symbols-outlined" aria-hidden="true">air</span>Breathe
+          </Link>
+          <Link className="today-action" to="/practice?reset=1">
+            <span className="material-symbols-outlined" aria-hidden="true">alarm</span>Back to it
+          </Link>
+          <Link className="today-action" to="/practice">
+            <span className="material-symbols-outlined" aria-hidden="true">self_improvement</span>Be present
+          </Link>
+        </nav>
+
+        {orderedPhases.map((phase, phaseIdx) => {
           const tasks = TASKS_BY_PHASE[phase];
           const meta = PHASE_META[phase];
           const phaseCompleted = tasks.filter((t) => completed.includes(t.id)).length;
+          const phaseOpen = openPhases.includes(phase);
 
           return (
             <section key={phase} className="animate-fade-up" style={{ animationDelay: `${0.05 + phaseIdx * 0.05}s` }}>
-              <div className="section-header" style={{ justifyContent: 'space-between' }}>
+              <button className="section-header phase-head" aria-expanded={phaseOpen} onClick={() => togglePhase(phase)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span className="material-symbols-outlined">{meta.icon}</span>
                   <div>
-                    <h3 className="section-title" style={{ marginBottom: 0 }}>{meta.label}</h3>
+                    <h3 className="section-title" style={{ marginBottom: 0 }}>
+                      {meta.label}{phase === nowPhase && <span className="phase-now">Now</span>}
+                    </h3>
                     <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)' }}>{meta.subtitle}</p>
                   </div>
                 </div>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-outline)' }}>
                   {phaseCompleted}/{tasks.length}
+                  <span className="material-symbols-outlined pr-row-chev" style={{ transform: phaseOpen ? 'rotate(180deg)' : 'none', marginLeft: 8 }} aria-hidden="true">expand_more</span>
                 </span>
-              </div>
+              </button>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              {phaseOpen && <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                 {tasks.map((task) => {
                   const checked = completed.includes(task.id);
                   const expanded = expandedTaskId === task.id;
@@ -175,7 +196,7 @@ export default function ChecklistPage() {
                               }}
                             >
                               <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
-                              Open in Tools
+                              Open in Practice
                             </Link>
                           )}
                         </div>
@@ -183,11 +204,17 @@ export default function ChecklistPage() {
                     </div>
                   );
                 })}
-              </div>
+              </div>}
             </section>
           );
         })}
       </div>
+
+      {checkIn && (
+        <Modal title="Emotional Check-in" icon="favorite" onClose={() => setCheckIn(false)} maxWidth={480}>
+          <EmotionalCheckIn onSaved={() => { setCheckIn(false); showToast('Check-in saved.'); }} />
+        </Modal>
+      )}
     </>
   );
 }

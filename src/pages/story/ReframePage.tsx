@@ -55,7 +55,7 @@ export default function ReframePage() {
       <Toast message={toast.message} show={toast.show} />
       <TopBar title="Reframe" icon="edit_note" />
       <div className="story-page">
-        <Link to="/story" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Story</Link>
+        <Link to="/reflect" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Reflect</Link>
 
         <div className="step-header">
           <div className="step-dots" aria-label={`Step ${step + 1} of 4`}>

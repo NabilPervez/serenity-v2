@@ -81,7 +81,7 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <>
-        <TopBar title="Analytics" icon="monitoring" />
+        <TopBar title="Progress" icon="monitoring" />
         <div className="page-content"><p style={{ color: 'var(--color-on-surface-variant)' }}>Loading your history\u2026</p></div>
       </>
     );
@@ -89,7 +89,7 @@ export default function AnalyticsPage() {
 
   return (
     <>
-      <TopBar title="Analytics" icon="monitoring" />
+      <TopBar title="Progress" icon="monitoring" />
       <div className="page-content">
 
         {/* ── 7-day rolling chart ── */}

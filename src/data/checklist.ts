@@ -53,7 +53,7 @@ export const CHECKLIST_TASKS: ChecklistTask[] = [
     whatToDo: 'Stand in front of a mirror, look yourself in the eye, and say your 7 chosen affirmations out loud.',
     whyWeDoIt: 'Your subconscious controls 90% of your brain\u2019s function and always listens to your internal dialogue. Speaking these truths overwrites the fear-based narrative.',
     icon: 'record_voice_over',
-    toolLink: '/tools?open=affirmations',
+    toolLink: '/practice?open=affirmations',
   },
   {
     id: 'm_exercise',
@@ -72,7 +72,7 @@ export const CHECKLIST_TASKS: ChecklistTask[] = [
     whatToDo: 'Inhale through the stomach for 4s, hold 4s, exhale 5–6s. Repeat 10 times.',
     whyWeDoIt: 'Breathing into your stomach pushes the diaphragm up, telling your brain you\u2019re safe and triggering a natural serotonin release.',
     icon: 'air',
-    toolLink: '/tools?open=breathe',
+    toolLink: '/practice?open=breathe',
   },
 
   // ── Afternoon ────────────────────────────────────────
@@ -84,7 +84,7 @@ export const CHECKLIST_TASKS: ChecklistTask[] = [
     whatToDo: 'Repeat the 4-4-6 box breathing cycle 10 times. Stomach out on the inhale.',
     whyWeDoIt: 'A midday reset keeps your nervous system from re-accumulating stress before evening.',
     icon: 'air',
-    toolLink: '/tools?open=breathe',
+    toolLink: '/practice?open=breathe',
   },
   {
     id: 'a_laughter',
@@ -141,7 +141,7 @@ export const CHECKLIST_TASKS: ChecklistTask[] = [
     whatToDo: 'Repeat the 4-4-6 box breathing cycle 10 times to prep the body for sleep.',
     whyWeDoIt: 'Slows respiration and signals safety before your subconscious enters deep REM sleep.',
     icon: 'air',
-    toolLink: '/tools?open=breathe',
+    toolLink: '/practice?open=breathe',
   },
   {
     id: 'e_reclaim_identity',

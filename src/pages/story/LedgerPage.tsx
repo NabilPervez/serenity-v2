@@ -39,7 +39,7 @@ export default function LedgerPage() {
       <Toast message={toast.message} show={toast.show} />
       <TopBar title="Effort Ledger" icon="nightlight" />
       <div className="story-page">
-        <Link to="/story" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Story</Link>
+        <Link to="/reflect" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Reflect</Link>
         <p className="story-lead">Efforts, not outcomes. One is enough.</p>
 
         <div className="card prompt-card">

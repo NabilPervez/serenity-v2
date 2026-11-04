@@ -1,34 +1,43 @@
 import { Link } from 'react-router-dom';
 import TopBar from '../../components/TopBar';
+import '../../present.css';
 
-const TILES = [
-  { to: '/story/reframe', icon: 'edit_note', title: 'Reframe', blurb: 'Rewrite one harsh thought into a merciful one' },
-  { to: '/story/ledger', icon: 'nightlight', title: 'Effort Ledger', blurb: 'Tonight: what I tried, and what I hand to Allah' },
-  { to: '/story/pillars', icon: 'foundation', title: 'Four Pillars', blurb: 'Weekly: Community, Purpose, Charity, Story' },
+/** Reflect — slower, written work, ordered by how often you do it (Nabil, 2026-11-03). */
+const ROWS = [
+  { to: '/reflect/quick', title: 'Reframe it.', meta: 'Anytime · 1 min', blurb: 'Turn what happened into the version that helps.' },
+  { to: '/reflect/reframe', title: 'Guided reframe.', meta: 'Anytime · 5 min', blurb: 'Rewrite one harsh thought into a merciful one.' },
+  { to: '/reflect/ledger', title: 'Effort ledger.', meta: 'Nightly', blurb: 'What I tried today, and what I hand to Allah.' },
+  { to: '/reflect/pillars', title: 'Four pillars.', meta: 'Weekly', blurb: 'Community, purpose, charity, story.' },
 ];
 
 export default function StoryHubPage() {
   return (
     <>
-      <TopBar title="Story" icon="auto_stories" />
-      <div className="story-page">
-        <div className="card anchor-card">
-          <p className="story-section-title">The story I'm choosing</p>
-          <ul style={{ paddingLeft: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <li>Allah is the Most Forgiving and the Most Kind.</li>
-            <li>I don't need to be perfect — Allah is in control, I am not.</li>
-            <li>I control my effort, my emotions and my outlook.</li>
-          </ul>
-        </div>
-        <div className="story-hub">
-          {TILES.map((t) => (
-            <Link key={t.to} to={t.to} className="card story-tile">
-              <div className="story-tile-icon"><span className="material-symbols-outlined">{t.icon}</span></div>
-              <h3>{t.title}</h3>
-              <p>{t.blurb}</p>
+      <TopBar title="Reflect" icon="auto_stories" />
+      <div className="pr-page">
+        <header className="pr-hero animate-fade-up">
+          <h1 className="pr-h1">The story I choose. <span>Written down.</span></h1>
+        </header>
+        <ul className="reflect-anchor">
+          <li>Allah is the Most Forgiving and the Most Kind.</li>
+          <li>I don't need to be perfect — Allah is in control, I am not.</li>
+          <li>I control my effort, my emotions and my outlook.</li>
+        </ul>
+        <nav className="pr-spine" aria-label="Reflect">
+          {ROWS.map((r, i) => (
+            <Link key={r.to} to={r.to} className="pr-row reflect-link">
+              <span className="pr-row-head" style={{ alignItems: 'flex-start' }}>
+                <span className="pr-row-n">0{i + 1}</span>
+                <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <span className="pr-row-title">{r.title}</span>
+                  <span className="pr-hint">{r.blurb}</span>
+                </span>
+                <span className="pr-row-meta">{r.meta}</span>
+                <span className="material-symbols-outlined pr-row-chev" aria-hidden="true">chevron_right</span>
+              </span>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </>
   );

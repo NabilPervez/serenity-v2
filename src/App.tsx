@@ -3,13 +3,14 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import AppShell from './components/AppShell';
 import ChecklistPage from './pages/ChecklistPage';
-import ToolsPage from './pages/ToolsPage';
+import SosPage from './pages/SosPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import StoryHubPage from './pages/story/StoryHubPage';
 import ReframePage from './pages/story/ReframePage';
 import LedgerPage from './pages/story/LedgerPage';
 import PillarsPage from './pages/story/PillarsPage';
-import PresentPage from './pages/present/PresentPage';
+import PracticePage from './pages/present/PracticePage';
+import QuickReframePage from './pages/story/QuickReframePage';
 import './story.css';
 import { initGlobalButtonSounds } from './utils/audio';
 
@@ -38,16 +39,24 @@ export default function App() {
     <AppShell>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Navigate to="/checklist" replace />} />
-          <Route path="/checklist" element={<PageTransition><ChecklistPage /></PageTransition>} />
-          <Route path="/tools" element={<PageTransition><ToolsPage /></PageTransition>} />
-          <Route path="/analytics" element={<PageTransition><AnalyticsPage /></PageTransition>} />
-          <Route path="/present" element={<PageTransition><PresentPage /></PageTransition>} />
-          <Route path="/story" element={<PageTransition><StoryHubPage /></PageTransition>} />
-          <Route path="/story/reframe" element={<PageTransition><ReframePage /></PageTransition>} />
-          <Route path="/story/ledger" element={<PageTransition><LedgerPage /></PageTransition>} />
-          <Route path="/story/pillars" element={<PageTransition><PillarsPage /></PageTransition>} />
-          <Route path="*" element={<Navigate to="/checklist" replace />} />
+          <Route path="/" element={<Navigate to="/today" replace />} />
+          <Route path="/today" element={<PageTransition><ChecklistPage /></PageTransition>} />
+          <Route path="/practice" element={<PageTransition><PracticePage /></PageTransition>} />
+          <Route path="/reflect" element={<PageTransition><StoryHubPage /></PageTransition>} />
+          <Route path="/reflect/quick" element={<PageTransition><QuickReframePage /></PageTransition>} />
+          <Route path="/reflect/reframe" element={<PageTransition><ReframePage /></PageTransition>} />
+          <Route path="/reflect/ledger" element={<PageTransition><LedgerPage /></PageTransition>} />
+          <Route path="/reflect/pillars" element={<PageTransition><PillarsPage /></PageTransition>} />
+          <Route path="/progress" element={<PageTransition><AnalyticsPage /></PageTransition>} />
+          <Route path="/sos" element={<PageTransition><SosPage /></PageTransition>} />
+          {/* Old routes → new IA (2026-11-03) */}
+          <Route path="/checklist" element={<Navigate to="/today" replace />} />
+          <Route path="/present" element={<Navigate to="/practice" replace />} />
+          <Route path="/tools" element={<Navigate to="/practice" replace />} />
+          <Route path="/analytics" element={<Navigate to="/progress" replace />} />
+          <Route path="/story" element={<Navigate to="/reflect" replace />} />
+          <Route path="/story/:sub" element={<Navigate to="/reflect" replace />} />
+          <Route path="*" element={<Navigate to="/today" replace />} />
         </Routes>
       </AnimatePresence>
     </AppShell>

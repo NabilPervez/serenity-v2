@@ -3,47 +3,47 @@ import { useSearchParams } from 'react-router-dom';
 import TopBar from '../../components/TopBar';
 import { Toast } from '../../components/Toast';
 import { useToast } from '../../hooks/useToast';
-import { db, type DistractionReset, type Judgment, type PracticeSession, type QuickReframe } from '../../data/db';
+import { db, type DistractionReset, type Judgment, type PracticeSession } from '../../data/db';
 import PracticeFlow from './PracticeFlow';
 import BackToIt from './BackToIt';
+import Modal from '../../components/Modal';
+import BoxBreathing from '../../components/BoxBreathing';
+import AffirmationsCopingModal from '../../components/AffirmationsCopingModal';
 import { FOOD_UNLOCK, JUDGMENT_TAGS, nowMs, streak, today } from './presentUtils';
 import '../../present.css';
 
-type Row = 'observe' | 'body' | 'judge' | 'reframe' | 'reset';
+type Row = 'observe' | 'body' | 'judge' | 'reset' | 'breathe' | 'affirm';
 
-const SEED: QuickReframe = {
-  happened: 'Jackhammers on the house for two days for foundation work.',
-  reframe: 'The landlord paid to fix the foundation, so for the rest of the lease we will have no structural issues and every door will work.',
-  createdAt: 0,
-  date: '',
-};
-
-export default function PresentPage() {
+/**
+ * Practice — every "do it now" exercise in one spine (Nabil, 2026-11-03).
+ * Merges the old Present tab with the Tools modules (Box Breathing, Affirmations & Coping).
+ */
+export default function PracticePage() {
   const [params, setParams] = useSearchParams();
   const resetFromShortcut = params.get('reset') === '1';
+  const openParam = params.get('open');
   const [open, setOpen] = useState<Row | null>(resetFromShortcut ? 'reset' : null);
+  const [modal, setModal] = useState<'breathe' | 'affirm' | null>(
+    openParam === 'breathe' ? 'breathe' : openParam === 'affirmations' ? 'affirm' : null
+  );
   const [sessions, setSessions] = useState<PracticeSession[]>([]);
   const [resets, setResets] = useState<DistractionReset[]>([]);
   const [judgments, setJudgments] = useState<Judgment[]>([]);
-  const [reframes, setReframes] = useState<QuickReframe[]>([]);
-  const [happened, setHappened] = useState('');
-  const [reframe, setReframe] = useState('');
   const { toast, showToast } = useToast();
 
   const load = useCallback(async () => {
-    const [s, r, j, q] = await Promise.all([
+    const [s, r, j] = await Promise.all([
       db.practiceSessions.toArray(),
       db.distractionResets.toArray(),
       db.judgments.toArray(),
-      db.quickReframes.orderBy('createdAt').reverse().toArray(),
     ]);
-    setSessions(s); setResets(r); setJudgments(j); setReframes(q);
+    setSessions(s); setResets(r); setJudgments(j);
   }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- async Dexie load
     load();
-    if (resetFromShortcut) { params.delete('reset'); setParams(params, { replace: true }); }
+    if (resetFromShortcut || openParam) { params.delete('reset'); params.delete('open'); setParams(params, { replace: true }); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -60,12 +60,11 @@ export default function PresentPage() {
       resets: todayR.length,
       startedPct: todayR.length ? Math.round((started / todayR.length) * 100) : null,
       judged: judgments.filter((j) => j.date === t).length,
-      reframed: reframes.filter((r) => r.date === t).length,
       streak: streak(sessions.filter((s) => s.type !== 'body').map((s) => s.date)),
       foodUnlocked: objectCount >= FOOD_UNLOCK,
       objectCount,
     };
-  }, [sessions, resets, judgments, reframes, t]);
+  }, [sessions, resets, judgments, t]);
 
   const weekTags = useMemo(() => {
     const since = nowMs() - 7 * 864e5;
@@ -84,14 +83,6 @@ export default function PresentPage() {
     load();
   };
 
-  const saveReframe = async () => {
-    if (!happened.trim() || !reframe.trim()) return;
-    await db.quickReframes.add({ happened: happened.trim(), reframe: reframe.trim(), createdAt: nowMs(), date: today() });
-    setHappened(''); setReframe('');
-    showToast('Reframed.');
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- async Dexie load
-    load();
-  };
 
   const practiceDone = (label: string) => () => { showToast(label); setOpen(null); load(); };
 
@@ -143,27 +134,24 @@ export default function PresentPage() {
       ),
     },
     {
-      id: 'reframe',
-      title: 'Reframe it.',
-      meta: `${reframes.length} saved`,
+      id: 'breathe',
+      title: 'Box breathing.',
+      meta: '4-4-6 · 10 reps',
       body: (
         <div className="pr-form">
-          <label className="pr-label" htmlFor="rf-what">What happened</label>
-          <textarea id="rf-what" className="qp-input qp-textarea" value={happened} onChange={(e) => setHappened(e.target.value)} placeholder="Just the facts" />
-          <label className="pr-label" htmlFor="rf-new">Reframe</label>
-          <textarea id="rf-new" className="qp-input qp-textarea" value={reframe} onChange={(e) => setReframe(e.target.value)} placeholder="What's the good in it?" />
-          <div className="pr-actions">
-            <button className="qp-btn qp-btn-primary" disabled={!happened.trim() || !reframe.trim()} onClick={saveReframe}>Save reframe</button>
-          </div>
-          <div className="pr-journal">
-            {(reframes.length ? reframes : [SEED]).slice(0, 10).map((r, i) => (
-              <div key={r.id ?? `seed-${i}`} className="pr-pair">
-                <p className="pr-before">{r.happened}</p>
-                <p className="pr-after">{r.reframe}</p>
-                {!r.id && <span className="pr-hint">Example</span>}
-              </div>
-            ))}
-          </div>
+          <p className="pr-lede">Reset your nervous system in about three minutes.</p>
+          <div className="pr-actions"><button className="qp-btn qp-btn-primary" onClick={() => setModal('breathe')}>Start breathing</button></div>
+        </div>
+      ),
+    },
+    {
+      id: 'affirm',
+      title: 'Affirm and cope.',
+      meta: '101 · 26 skills',
+      body: (
+        <div className="pr-form">
+          <p className="pr-lede">Pick an affirmation or a coping skill for this moment.</p>
+          <div className="pr-actions"><button className="qp-btn qp-btn-primary" onClick={() => setModal('affirm')}>Open library</button></div>
         </div>
       ),
     },
@@ -172,7 +160,7 @@ export default function PresentPage() {
   return (
     <>
       <Toast message={toast.message} show={toast.show} />
-      <TopBar title="Present" icon="self_improvement" />
+      <TopBar title="Practice" icon="self_improvement" />
       <div className="pr-page">
         <header className="pr-hero animate-fade-up">
           <h1 className="pr-h1">Be here. <span>No judgment.</span></h1>
@@ -204,6 +192,17 @@ export default function PresentPage() {
             </div>
           ))}
         </section>
+
+        {modal === 'breathe' && (
+          <Modal title="Box Breathing" icon="air" onClose={() => setModal(null)} maxWidth={480}>
+            <BoxBreathing onSessionComplete={() => showToast('Session logged.')} onClose={() => setModal(null)} />
+          </Modal>
+        )}
+        {modal === 'affirm' && (
+          <Modal title="Affirmations & Coping" icon="auto_awesome" onClose={() => setModal(null)} maxWidth={560}>
+            <AffirmationsCopingModal />
+          </Modal>
+        )}
 
         {!stats.foodUnlocked && (
           <p className="pr-foot">{FOOD_UNLOCK - stats.objectCount} more object sessions until food is suggested.</p>

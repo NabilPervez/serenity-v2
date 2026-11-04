@@ -8,11 +8,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/checklist', icon: 'fact_check', label: 'Checklist' },
-  { to: '/present', icon: 'self_improvement', label: 'Present' },
-  { to: '/tools', icon: 'spa', label: 'Tools' },
-  { to: '/story', icon: 'auto_stories', label: 'Story' },
-  { to: '/analytics', icon: 'monitoring', label: 'Analytics' },
+  { to: '/today', icon: 'today', label: 'Today' },
+  { to: '/practice', icon: 'self_improvement', label: 'Practice' },
+  { to: '/reflect', icon: 'auto_stories', label: 'Reflect' },
+  { to: '/progress', icon: 'monitoring', label: 'Progress' },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {

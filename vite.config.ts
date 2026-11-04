@@ -19,8 +19,8 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         shortcuts: [
-          { name: 'Back to it', short_name: 'Back to it', description: 'Start a 5-minute distraction reset', url: '/present?reset=1' },
-          { name: 'Present', short_name: 'Present', url: '/present' },
+          { name: 'Back to it', short_name: 'Back to it', description: 'Start a 5-minute distraction reset', url: '/practice?reset=1' },
+          { name: 'SOS', short_name: 'SOS', url: '/sos' },
         ],
         icons: [
           {

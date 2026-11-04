@@ -41,7 +41,7 @@ export default function PillarsPage() {
       <Toast message={toast.message} show={toast.show} />
       <TopBar title="Four Pillars" icon="foundation" />
       <div className="story-page">
-        <Link to="/story" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Story</Link>
+        <Link to="/reflect" className="back-link"><span className="material-symbols-outlined">arrow_back</span>Reflect</Link>
         <p className="story-lead">Week of {weekStart}. Write a little or a lot — any entry counts.</p>
 
         <div className="pillar-grid">
