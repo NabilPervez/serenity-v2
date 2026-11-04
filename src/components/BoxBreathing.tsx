@@ -126,7 +126,7 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
     cursor: 'pointer',
     fontFamily: 'var(--font-headline)',
     fontWeight: 600,
-    fontSize: '1rem',
+    fontSize: '16px',
     color: 'var(--color-on-surface-variant)',
   };
 
@@ -142,10 +142,10 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
       <div style={{ maxWidth: 380, width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <p style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
+          <p style={{ fontSize: '13px', color: 'rgba(68,72,63,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
             {status === 'complete' ? 'Session Complete \uD83C\uDF3F' : status === 'idle' ? 'Ready to begin' : status === 'paused' ? 'Paused' : `Cycle ${cycle} of ${TOTAL_CYCLES}`}
           </p>
-          <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '1.75rem', fontWeight: 800, color: isActive ? phaseColor : 'var(--color-on-surface)' }}>
+          <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '32px', fontWeight: 600, color: isActive ? phaseColor : 'var(--color-on-surface)' }}>
             {status === 'complete' ? 'Well done.' : status === 'idle' ? 'Center yourself' : phase.label}
           </h2>
         </div>
@@ -155,9 +155,9 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
           <div style={circleStyle}>
             <div className="breathing-inner" style={{ borderColor: `${phaseColor}25`, width: 164, height: 164 }}>
               {status === 'idle' ? (
-                <><span style={{ fontSize: '2.25rem' }}>{'\ud83c\udf2c\ufe0f'}</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Let's breathe</span></>
+                <><span style={{ fontSize: '32px' }}>{'\ud83c\udf2c\ufe0f'}</span><span style={{ fontSize: '13px', color: 'rgba(68,72,63,0.6)' }}>Let's breathe</span></>
               ) : status === 'complete' ? (
-                <><span style={{ fontSize: '2.25rem' }}>{'\ud83c\udf3f'}</span><span style={{ fontSize: '0.8rem', color: 'rgba(68,72,63,0.6)' }}>Beautiful</span></>
+                <><span style={{ fontSize: '32px' }}>{'\ud83c\udf3f'}</span><span style={{ fontSize: '13px', color: 'rgba(68,72,63,0.6)' }}>Beautiful</span></>
               ) : (
                 <><span className="breathing-phase-text" style={{ color: phaseColor }}>{phase.label}</span><span className="breathing-count">{countdown}s</span></>
               )}
@@ -165,8 +165,8 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
           </div>
           {isActive && (
             <div style={{ position: 'absolute', top: '-40px', right: '-30px', padding: '0.7rem 0.9rem', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(8px)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-card)', border: '1px solid rgba(197,200,188,0.2)' }}>
-              <p style={{ fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.6rem', marginBottom: '0.125rem' }}>Coming next</p>
-              <p style={{ fontWeight: 500, color: 'var(--color-on-surface)', fontSize: '0.75rem' }}>{nextPhase.label} {'\u00b7'} {nextPhase.seconds}s</p>
+              <p style={{ fontWeight: 600, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '13px', marginBottom: '0.125rem' }}>Coming next</p>
+              <p style={{ fontWeight: 500, color: 'var(--color-on-surface)', fontSize: '13px' }}>{nextPhase.label} {'\u00b7'} {nextPhase.seconds}s</p>
             </div>
           )}
         </div>
@@ -181,7 +181,7 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
           </div>
         )}
 
-        <p style={{ color: 'var(--color-on-surface-variant)', lineHeight: 1.6, fontSize: '0.85rem', maxWidth: 300 }}>
+        <p style={{ color: 'var(--color-on-surface-variant)', lineHeight: 1.6, fontSize: '14px', maxWidth: 300 }}>
           {status === 'complete'
             ? 'You completed 10 cycles. Your nervous system has been reset — notice how you feel.'
             : status === 'idle'
@@ -192,8 +192,8 @@ export default function BoxBreathing({ onSessionComplete, onClose }: BoxBreathin
         {(isActive || status === 'complete') && (
           <div style={{ width: '100%' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(68,72,63,0.45)' }}>Reps</span>
-              <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(68,72,63,0.45)' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(68,72,63,0.45)' }}>Reps</span>
+              <span style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(68,72,63,0.45)' }}>
                 {status === 'complete' ? `${TOTAL_CYCLES}/${TOTAL_CYCLES}` : `${cycle - 1}/${TOTAL_CYCLES}`} done
               </span>
             </div>

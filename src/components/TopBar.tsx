@@ -9,7 +9,7 @@ export default function TopBar({ title, icon, right }: TopBarProps) {
   return (
     <header className="top-bar">
       <div className="top-bar-title">
-        <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '1.3rem' }}>
+        <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '22px' }}>
           {icon}
         </span>
         {title}

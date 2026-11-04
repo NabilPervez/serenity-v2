@@ -12,12 +12,16 @@ export default defineConfig({
         name: 'Serenity v2 - Daily Action Plan',
         short_name: 'Serenity',
         description: 'A local-first PWA guiding you through a structured daily action plan for anxiety and stress management',
-        theme_color: '#526442',
-        background_color: '#fcf9f3',
+        theme_color: '#3f6f55',
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
+        shortcuts: [
+          { name: 'Back to it', short_name: 'Back to it', description: 'Start a 5-minute distraction reset', url: '/present?reset=1' },
+          { name: 'Present', short_name: 'Present', url: '/present' },
+        ],
         icons: [
           {
             src: 'pwa-192x192.png',

@@ -20,7 +20,7 @@ export default function AffirmationsCopingModal() {
           onClick={() => setTab('affirmations')}
           style={{
             flex: 1, padding: '0.6rem 1rem', borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer',
-            fontFamily: 'var(--font-headline)', fontWeight: 700, fontSize: '0.85rem',
+            fontFamily: 'var(--font-headline)', fontWeight: 600, fontSize: '14px',
             background: tab === 'affirmations' ? 'var(--gradient-silk)' : 'transparent',
             color: tab === 'affirmations' ? 'white' : 'var(--color-on-surface-variant)',
           }}
@@ -31,7 +31,7 @@ export default function AffirmationsCopingModal() {
           onClick={() => setTab('coping')}
           style={{
             flex: 1, padding: '0.6rem 1rem', borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer',
-            fontFamily: 'var(--font-headline)', fontWeight: 700, fontSize: '0.85rem',
+            fontFamily: 'var(--font-headline)', fontWeight: 600, fontSize: '14px',
             background: tab === 'coping' ? 'var(--gradient-silk)' : 'transparent',
             color: tab === 'coping' ? 'white' : 'var(--color-on-surface-variant)',
           }}
@@ -40,7 +40,7 @@ export default function AffirmationsCopingModal() {
         </button>
       </div>
 
-      <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)', marginBottom: '1rem' }}>
+      <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)', marginBottom: '1rem' }}>
         {tab === 'affirmations'
           ? 'Choose up to 7 to say out loud each morning in the mirror.'
           : 'Pick up to 5 to practice daily.'}
@@ -81,8 +81,8 @@ export default function AffirmationsCopingModal() {
                 <input type="checkbox" checked={checked} readOnly aria-hidden="true" />
                 <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', marginTop: 2 }}>{skill.icon}</span>
                 <div>
-                  <p className="coping-title" style={{ fontWeight: 700, color: 'var(--color-on-surface)', marginBottom: '0.125rem' }}>{skill.name}</p>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)' }}>{skill.description}</p>
+                  <p className="coping-title" style={{ fontWeight: 600, color: 'var(--color-on-surface)', marginBottom: '0.125rem' }}>{skill.name}</p>
+                  <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)' }}>{skill.description}</p>
                 </div>
               </div>
             );

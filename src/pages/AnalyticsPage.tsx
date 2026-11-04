@@ -3,7 +3,7 @@ import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 import TopBar from '../components/TopBar';
-import { getAllCheckIns, getAllChecklistDays, type CheckIn, type ChecklistDay } from '../data/db';
+import { db, getAllCheckIns, getAllChecklistDays, type CheckIn, type ChecklistDay, type PracticeSession } from '../data/db';
 import { CHECKLIST_TASKS } from '../data/checklist';
 
 function dateStringDaysAgo(n: number): string {
@@ -40,9 +40,11 @@ export default function AnalyticsPage() {
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [days, setDays] = useState<ChecklistDay[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sessions, setSessions] = useState<PracticeSession[]>([]);
 
   useEffect(() => {
-    Promise.all([getAllCheckIns(), getAllChecklistDays()]).then(([ci, cd]) => {
+    Promise.all([getAllCheckIns(), getAllChecklistDays(), db.practiceSessions.toArray()]).then(([ci, cd, ps]) => {
+      setSessions(ps);
       setCheckIns(ci);
       setDays(cd);
       setLoading(false);
@@ -71,9 +73,10 @@ export default function AnalyticsPage() {
         label: formatShortDate(date),
         completion: completionByDate[date] ?? 0,
         anxiety: avgAnxiety,
+        present: Math.round(sessions.filter((p) => p.date === date).reduce((n, p) => n + p.durationSec, 0) / 6) / 10,
       };
     });
-  }, [checkIns, completionByDate]);
+  }, [checkIns, completionByDate, sessions]);
 
   if (loading) {
     return (
@@ -100,15 +103,16 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={chartData} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline-variant)" />
-                  <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--color-on-surface-variant)' }} />
-                  <YAxis yAxisId="left" domain={[0, 100]} tick={{ fontSize: 12, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Adherence %', angle: -90, position: 'insideLeft', fontSize: 11, fill: 'var(--color-on-surface-variant)' }} />
-                  <YAxis yAxisId="right" orientation="right" domain={[0, 10]} tick={{ fontSize: 12, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Stress', angle: 90, position: 'insideRight', fontSize: 11, fill: 'var(--color-on-surface-variant)' }} />
+                  <XAxis dataKey="label" tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
+                  <YAxis yAxisId="left" domain={[0, 100]} tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Adherence %', angle: -90, position: 'insideLeft', fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
+                  <YAxis yAxisId="right" orientation="right" domain={[0, 10]} tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Stress', angle: 90, position: 'insideRight', fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
                   <Tooltip
-                    contentStyle={{ background: 'var(--color-surface-container-lowest)', border: 'none', borderRadius: 12, boxShadow: 'var(--shadow-card)', fontSize: 13 }}
+                    contentStyle={{ background: 'var(--color-surface-container-lowest)', border: '1px solid var(--hairline)', borderRadius: 8, fontSize: 13 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar yAxisId="left" dataKey="completion" name="Checklist Adherence %" fill="var(--color-primary-container)" radius={[6, 6, 0, 0]} />
-                  <Line yAxisId="right" type="monotone" dataKey="anxiety" name="Avg Stress (1-10)" stroke="var(--color-secondary)" strokeWidth={2.5} dot={{ r: 4 }} connectNulls />
+                  <Legend wrapperStyle={{ fontSize: 13 }} />
+                  <Bar yAxisId="left" dataKey="completion" name="Checklist Adherence %" fill="var(--sage-200)" radius={[2, 2, 0, 0]} />
+                  <Line yAxisId="right" type="monotone" dataKey="present" name="Present minutes" stroke="var(--sage-400)" strokeWidth={1.5} strokeDasharray="4 3" dot={{ r: 3 }} />
+                  <Line yAxisId="right" type="monotone" dataKey="anxiety" name="Avg Stress (1-10)" stroke="var(--color-secondary)" strokeWidth={2} dot={{ r: 4 }} connectNulls />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -137,19 +141,19 @@ export default function AnalyticsPage() {
                     <div className="timeline-dot" style={{ background: color }} />
                     <div style={{ background: 'var(--color-surface-container-lowest)', borderRadius: 'var(--radius-md)', padding: '1rem', boxShadow: 'var(--shadow-card)', marginBottom: '1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-                        <div style={{ fontSize: '1.2rem' }}>{entry.moodIcon}</div>
+                        <div style={{ fontSize: '18px' }}>{entry.moodIcon}</div>
                         <div style={{ flex: 1 }}>
-                          <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>{entry.mood} {'\u00b7'} {entry.anxietyLevel}/10</h4>
-                          <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--color-outline)' }}>
+                          <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>{entry.mood} {'\u00b7'} {entry.anxietyLevel}/10</h4>
+                          <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-outline)' }}>
                             {formatEntryDate(entry.timestamp)}, {formatTime(entry.timestamp)}
                           </p>
                         </div>
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-primary)', background: 'rgba(82,100,66,0.08)', padding: '0.25rem 0.6rem', borderRadius: 'var(--radius-full)' }}>
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-primary)', background: 'rgba(82,100,66,0.08)', padding: '0.25rem 0.6rem', borderRadius: 'var(--radius-full)' }}>
                           {dayCompletion}% plan
                         </span>
                       </div>
                       {entry.notes && (
-                        <p style={{ fontSize: '0.85rem', color: 'var(--color-on-surface-variant)', fontStyle: 'italic', margin: 0 }}>
+                        <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)', fontStyle: 'italic', margin: 0 }}>
                           "{entry.notes}"
                         </p>
                       )}

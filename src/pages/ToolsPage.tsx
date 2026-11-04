@@ -75,11 +75,11 @@ export default function ToolsPage() {
                 }}
               >
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: 'var(--color-primary-container)', color: 'var(--color-on-primary-container)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: '1.5rem' }}>{mod.icon}</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>{mod.icon}</span>
                 </div>
                 <div>
-                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 700, fontSize: '1rem', color: 'var(--color-on-surface)', marginBottom: '0.25rem' }}>{mod.title}</p>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)' }}>{mod.blurb}</p>
+                  <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 600, fontSize: '16px', color: 'var(--color-on-surface)', marginBottom: '0.25rem' }}>{mod.title}</p>
+                  <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)' }}>{mod.blurb}</p>
                 </div>
               </button>
             ))}
@@ -92,7 +92,7 @@ export default function ToolsPage() {
             <span className="material-symbols-outlined">emergency</span>
             <h3 className="section-title">Emergency Reset</h3>
           </div>
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)', margin: '0 0.25rem 0.75rem' }}>
+          <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)', margin: '0 0.25rem 0.75rem' }}>
             Use these the moment a panic attack or high-stress moment hits.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -109,8 +109,8 @@ export default function ToolsPage() {
                       <span className="material-symbols-outlined">{tool.icon}</span>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 700, color: 'var(--color-on-surface)' }}>{tool.title}</p>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)' }}>{tool.subtitle}</p>
+                      <p style={{ fontFamily: 'var(--font-headline)', fontWeight: 600, color: 'var(--color-on-surface)' }}>{tool.title}</p>
+                      <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)' }}>{tool.subtitle}</p>
                     </div>
                     <span className="material-symbols-outlined" style={{ color: 'var(--color-outline)', transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s var(--ease-standard)' }}>
                       expand_more
@@ -121,10 +121,10 @@ export default function ToolsPage() {
                     <div style={{ marginTop: '1rem', paddingLeft: '3.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       <ol style={{ paddingLeft: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                         {tool.steps.map((step, i) => (
-                          <li key={i} style={{ fontSize: '0.85rem', color: 'var(--color-on-surface-variant)', lineHeight: 1.6 }}>{step}</li>
+                          <li key={i} style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)', lineHeight: 1.6 }}>{step}</li>
                         ))}
                       </ol>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)', fontStyle: 'italic', marginTop: '0.25rem' }}>
+                      <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)', fontStyle: 'italic', marginTop: '0.25rem' }}>
                         {tool.why}
                       </p>
                     </div>

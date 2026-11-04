@@ -52,7 +52,7 @@ export default function Modal({ title, icon, onClose, children, maxWidth = 560 }
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-outline-variant)', flexShrink: 0,
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-headline)', fontWeight: 700, fontSize: '1.1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-headline)', fontWeight: 600, fontSize: '18px' }}>
             {icon && <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)' }}>{icon}</span>}
             {title}
           </div>

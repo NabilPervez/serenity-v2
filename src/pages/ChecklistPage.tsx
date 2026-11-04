@@ -70,7 +70,7 @@ export default function ChecklistPage() {
         right={
           currentStreak > 0 ? (
             <div className="streak-badge">
-              <span className="material-symbols-outlined" style={{ fontSize: '0.9rem' }}>local_fire_department</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>local_fire_department</span>
               {currentStreak} day streak
             </div>
           ) : undefined
@@ -82,10 +82,10 @@ export default function ChecklistPage() {
         <section className="card animate-fade-up" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', right: '-16px', top: '-16px', width: '128px', height: '128px', background: 'rgba(156, 175, 136, 0.08)', borderRadius: '50%', filter: 'blur(24px)' }} />
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-on-surface)', marginBottom: '0.375rem' }}>
+            <h2 style={{ fontFamily: 'var(--font-headline)', fontSize: '24px', fontWeight: 600, color: 'var(--color-on-surface)', marginBottom: '0.375rem' }}>
               Today's Action Plan
             </h2>
-            <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '0.9rem' }}>
+            <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '16px' }}>
               {progressPct === 100 ? '\ud83c\udf89 Every step complete — well done today.' : progressPct > 50 ? "You're more than halfway there." : "Let's reset your nervous system, step by step."}
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function ChecklistPage() {
                 style={{ transition: 'stroke-dashoffset 0.6s var(--ease-standard)' }}
               />
             </svg>
-            <span className="progress-ring-text" style={{ fontSize: '1.05rem' }}>{progressPct}%</span>
+            <span className="progress-ring-text" style={{ fontSize: '16px' }}>{progressPct}%</span>
           </div>
         </section>
 
@@ -115,10 +115,10 @@ export default function ChecklistPage() {
                   <span className="material-symbols-outlined">{meta.icon}</span>
                   <div>
                     <h3 className="section-title" style={{ marginBottom: 0 }}>{meta.label}</h3>
-                    <p style={{ fontSize: '0.7rem', color: 'var(--color-on-surface-variant)' }}>{meta.subtitle}</p>
+                    <p style={{ fontSize: '13px', color: 'var(--color-on-surface-variant)' }}>{meta.subtitle}</p>
                   </div>
                 </div>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-outline)' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-outline)' }}>
                   {phaseCompleted}/{tasks.length}
                 </span>
               </div>
@@ -146,22 +146,22 @@ export default function ChecklistPage() {
                           style={{ minWidth: 24, minHeight: 24 }}
                           aria-label={task.title}
                         />
-                        <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '1.3rem', marginTop: 2 }}>{task.icon}</span>
+                        <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '22px', marginTop: 2 }}>{task.icon}</span>
                         <div style={{ flex: 1 }}>
-                          <p className="coping-title" style={{ fontWeight: 700, color: 'var(--color-on-surface)', marginBottom: '0.125rem' }}>{task.title}</p>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--color-outline)' }}>{task.frequency}</p>
+                          <p className="coping-title" style={{ fontWeight: 600, color: 'var(--color-on-surface)', marginBottom: '0.125rem' }}>{task.title}</p>
+                          <p style={{ fontSize: '13px', color: 'var(--color-outline)' }}>{task.frequency}</p>
                         </div>
-                        <span className="material-symbols-outlined" style={{ color: 'var(--color-outline)', fontSize: '1.2rem', transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s var(--ease-standard)' }}>
+                        <span className="material-symbols-outlined" style={{ color: 'var(--color-outline)', fontSize: '18px', transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s var(--ease-standard)' }}>
                           expand_more
                         </span>
                       </div>
 
                       {expanded && (
                         <div style={{ padding: '0 0.25rem 0.75rem 3.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                          <p style={{ fontSize: '0.85rem', color: 'var(--color-on-surface-variant)', lineHeight: 1.6 }}>
+                          <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)', lineHeight: 1.6 }}>
                             <strong style={{ color: 'var(--color-on-surface)' }}>What to do: </strong>{task.whatToDo}
                           </p>
-                          <p style={{ fontSize: '0.85rem', color: 'var(--color-on-surface-variant)', lineHeight: 1.6, fontStyle: 'italic' }}>
+                          <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)', lineHeight: 1.6, fontStyle: 'italic' }}>
                             <strong style={{ color: 'var(--color-on-surface)', fontStyle: 'normal' }}>Why: </strong>{task.whyWeDoIt}
                           </p>
                           {task.toolLink && (
@@ -171,10 +171,10 @@ export default function ChecklistPage() {
                                 alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
                                 padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)',
                                 background: 'var(--color-primary-container)', color: 'var(--color-on-primary-container)',
-                                textDecoration: 'none', fontSize: '0.8rem', fontWeight: 700, marginTop: '0.25rem',
+                                textDecoration: 'none', fontSize: '13px', fontWeight: 600, marginTop: '0.25rem',
                               }}
                             >
-                              <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>arrow_forward</span>
+                              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
                               Open in Tools
                             </Link>
                           )}

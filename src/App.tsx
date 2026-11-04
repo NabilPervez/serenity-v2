@@ -9,6 +9,7 @@ import StoryHubPage from './pages/story/StoryHubPage';
 import ReframePage from './pages/story/ReframePage';
 import LedgerPage from './pages/story/LedgerPage';
 import PillarsPage from './pages/story/PillarsPage';
+import PresentPage from './pages/present/PresentPage';
 import './story.css';
 import { initGlobalButtonSounds } from './utils/audio';
 
@@ -17,7 +18,7 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => (
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    transition={{ duration: 0.3 }}
+    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     className="page-transition-wrapper"
     style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
   >
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/checklist" element={<PageTransition><ChecklistPage /></PageTransition>} />
           <Route path="/tools" element={<PageTransition><ToolsPage /></PageTransition>} />
           <Route path="/analytics" element={<PageTransition><AnalyticsPage /></PageTransition>} />
+          <Route path="/present" element={<PageTransition><PresentPage /></PageTransition>} />
           <Route path="/story" element={<PageTransition><StoryHubPage /></PageTransition>} />
           <Route path="/story/reframe" element={<PageTransition><ReframePage /></PageTransition>} />
           <Route path="/story/ledger" element={<PageTransition><LedgerPage /></PageTransition>} />

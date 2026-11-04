@@ -9,6 +9,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { to: '/checklist', icon: 'fact_check', label: 'Checklist' },
+  { to: '/present', icon: 'self_improvement', label: 'Present' },
   { to: '/tools', icon: 'spa', label: 'Tools' },
   { to: '/story', icon: 'auto_stories', label: 'Story' },
   { to: '/analytics', icon: 'monitoring', label: 'Analytics' },
@@ -20,7 +21,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Desktop Sidebar */}
       <nav className="nav-drawer">
         <div className="nav-brand">
-          <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '1.5rem' }}>spa</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>spa</span>
           Serenity
         </div>
         <div className="nav-links">
@@ -30,7 +31,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               to={item.to}
               className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>{item.icon}</span>
               {item.label}
             </NavLink>
           ))}
@@ -50,7 +51,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             to={item.to}
             className={({ isActive }) => `bottom-nav-item${isActive ? ' active' : ''}`}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '1.4rem' }}>{item.icon}</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>{item.icon}</span>
             {item.label}
           </NavLink>
         ))}

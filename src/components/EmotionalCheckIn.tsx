@@ -36,7 +36,7 @@ export default function EmotionalCheckIn({ onSaved }: EmotionalCheckInProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div>
-        <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-on-surface-variant)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-on-surface-variant)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           How are you feeling right now?
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -57,10 +57,10 @@ export default function EmotionalCheckIn({ onSaved }: EmotionalCheckInProps) {
         <>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-on-surface-variant)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Anxiety Level
               </p>
-              <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>{anxietyLevel}/10</span>
+              <span style={{ fontWeight: 600, color: 'var(--color-secondary)' }}>{anxietyLevel}/10</span>
             </div>
             <input
               type="range" min={1} max={10} value={anxietyLevel}
@@ -70,7 +70,7 @@ export default function EmotionalCheckIn({ onSaved }: EmotionalCheckInProps) {
           </div>
 
           <div>
-            <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-on-surface-variant)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-on-surface-variant)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Notes (optional)
             </p>
             <textarea

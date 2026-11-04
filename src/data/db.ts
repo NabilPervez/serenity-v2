@@ -54,12 +54,56 @@ export interface PillarWeek {
   createdAt: number;
 }
 
+/** Present › one 60-second observation or body-focus session. */
+export interface PracticeSession {
+  id?: number;
+  type: 'object' | 'food' | 'body';
+  mode: 'internal' | 'external' | 'both';
+  target: string;
+  note: string;
+  startedAt: number;
+  date: string;
+  durationSec: number;
+}
+
+/** Present › "Back to it": a 5-minute distraction reset. */
+export interface DistractionReset {
+  id?: number;
+  task: string;
+  createdAt: number;
+  date: string;
+  firesAt: number;
+  outcome: 'pending' | 'started' | 'snoozed' | 'missed';
+  snoozed: boolean;
+}
+
+/** Present › one judgment noticed. */
+export interface Judgment {
+  id?: number;
+  tag: string;
+  createdAt: number;
+  date: string;
+}
+
+/** Present › quick positive reframe (separate from Story › Reframe). */
+export interface QuickReframe {
+  id?: number;
+  happened: string;
+  reframe: string;
+  createdAt: number;
+  date: string;
+}
+
 class SerenityDB extends Dexie {
   checklistDays!: Table<ChecklistDay>;
   checkIns!: Table<CheckIn>;
   reframes!: Table<Reframe>;
   efforts!: Table<EffortNight>;
   pillarWeeks!: Table<PillarWeek>;
+  practiceSessions!: Table<PracticeSession>;
+  distractionResets!: Table<DistractionReset>;
+  judgments!: Table<Judgment>;
+  quickReframes!: Table<QuickReframe>;
 
   constructor() {
     super('SerenityV2DB');
@@ -74,6 +118,18 @@ class SerenityDB extends Dexie {
       reframes: '++id, timestamp, date',
       efforts: '++id, &date',
       pillarWeeks: '++id, &weekStart',
+    });
+    // v3 — additive: Present section. Earlier tables untouched.
+    this.version(3).stores({
+      checklistDays: '++id, date',
+      checkIns: '++id, timestamp, date',
+      reframes: '++id, timestamp, date',
+      efforts: '++id, &date',
+      pillarWeeks: '++id, &weekStart',
+      practiceSessions: '++id, startedAt, date, type',
+      distractionResets: '++id, createdAt, date',
+      judgments: '++id, createdAt, date, tag',
+      quickReframes: '++id, createdAt, date',
     });
   }
 }
