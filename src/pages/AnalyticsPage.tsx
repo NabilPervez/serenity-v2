@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
-  ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import TopBar from '../components/TopBar';
 import { db, getAllCheckIns, getAllChecklistDays, type CheckIn, type ChecklistDay, type PracticeSession } from '../data/db';
@@ -71,12 +71,22 @@ export default function AnalyticsPage() {
       return {
         date,
         label: formatShortDate(date),
+        day: new Date(date + 'T00:00').toLocaleDateString([], { weekday: 'narrow' }),
         completion: completionByDate[date] ?? 0,
         anxiety: avgAnxiety,
         present: Math.round(sessions.filter((p) => p.date === date).reduce((n, p) => n + p.durationSec, 0) / 6) / 10,
       };
     });
   }, [checkIns, completionByDate, sessions]);
+
+  const summary = useMemo(() => {
+    const stressDays = chartData.filter((d) => d.anxiety !== null);
+    return {
+      adherence: Math.round(chartData.reduce((n, d) => n + d.completion, 0) / chartData.length),
+      stress: stressDays.length ? Math.round((stressDays.reduce((n, d) => n + (d.anxiety ?? 0), 0) / stressDays.length) * 10) / 10 : null,
+      present: Math.round(chartData.reduce((n, d) => n + d.present, 0)),
+    };
+  }, [chartData]);
 
   if (loading) {
     return (
@@ -92,30 +102,49 @@ export default function AnalyticsPage() {
       <TopBar title="Progress" icon="monitoring" />
       <div className="page-content">
 
-        {/* ── 7-day rolling chart ── */}
-        <section className="card animate-fade-up">
-          <div className="section-header" style={{ marginBottom: '1rem' }}>
+        {/* ── Week at a glance ── */}
+        <section className="progress-stats animate-fade-up">
+          <div className="progress-stat">
+            <span className="progress-stat-value">{summary.adherence}%</span>
+            <span className="progress-stat-label">Avg plan</span>
+          </div>
+          <div className="progress-stat">
+            <span className="progress-stat-value">{summary.stress ?? '\u2013'}</span>
+            <span className="progress-stat-label">Avg stress</span>
+          </div>
+          <div className="progress-stat">
+            <span className="progress-stat-value">{summary.present}</span>
+            <span className="progress-stat-label">Present min</span>
+          </div>
+        </section>
+
+        {/* ── 7-day chart ── */}
+        <section className="card progress-chart-card animate-fade-up">
+          <div className="section-header" style={{ marginBottom: '0.75rem' }}>
             <span className="material-symbols-outlined">show_chart</span>
             <h3 className="section-title">7-Day Trend</h3>
           </div>
-          <div style={{ overflowX: 'auto' }}>
-            <div style={{ minWidth: 480, height: 280 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={chartData} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline-variant)" />
-                  <XAxis dataKey="label" tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
-                  <YAxis yAxisId="left" domain={[0, 100]} tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Adherence %', angle: -90, position: 'insideLeft', fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
-                  <YAxis yAxisId="right" orientation="right" domain={[0, 10]} tick={{ fontSize: 13, fill: 'var(--color-on-surface-variant)' }} label={{ value: 'Stress', angle: 90, position: 'insideRight', fontSize: 13, fill: 'var(--color-on-surface-variant)' }} />
-                  <Tooltip
-                    contentStyle={{ background: 'var(--color-surface-container-lowest)', border: '1px solid var(--hairline)', borderRadius: 8, fontSize: 13 }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: 13 }} />
-                  <Bar yAxisId="left" dataKey="completion" name="Checklist Adherence %" fill="var(--sage-200)" radius={[2, 2, 0, 0]} />
-                  <Line yAxisId="right" type="monotone" dataKey="present" name="Present minutes" stroke="var(--sage-400)" strokeWidth={1.5} strokeDasharray="4 3" dot={{ r: 3 }} />
-                  <Line yAxisId="right" type="monotone" dataKey="anxiety" name="Avg Stress (1-10)" stroke="var(--color-secondary)" strokeWidth={2} dot={{ r: 4 }} connectNulls />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
+          <div className="progress-legend">
+            <span><i style={{ background: 'var(--sage-200)' }} />Plan %</span>
+            <span><i style={{ background: 'var(--color-secondary)' }} />Stress</span>
+            <span><i style={{ background: 'var(--sage-400)' }} />Present min</span>
+          </div>
+          <div style={{ width: '100%', height: 220 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={chartData} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--color-outline-variant)" />
+                <XAxis dataKey="day" tickLine={false} axisLine={false} interval={0} tick={{ fontSize: 12, fill: 'var(--color-on-surface-variant)' }} />
+                <YAxis yAxisId="left" domain={[0, 100]} ticks={[0, 50, 100]} width={30} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'var(--color-on-surface-variant)' }} />
+                <YAxis yAxisId="right" orientation="right" domain={[0, 10]} ticks={[0, 5, 10]} width={22} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'var(--color-on-surface-variant)' }} />
+                <Tooltip
+                  labelFormatter={(_, p) => (p?.[0]?.payload?.label ?? '')}
+                  contentStyle={{ background: 'var(--color-surface-container-lowest)', border: '1px solid var(--hairline)', borderRadius: 8, fontSize: 13 }}
+                />
+                <Bar yAxisId="left" dataKey="completion" name="Plan %" fill="var(--sage-200)" radius={[4, 4, 0, 0]} maxBarSize={28} />
+                <Line yAxisId="right" type="monotone" dataKey="present" name="Present min" stroke="var(--sage-400)" strokeWidth={1.5} strokeDasharray="4 3" dot={{ r: 2 }} />
+                <Line yAxisId="right" type="monotone" dataKey="anxiety" name="Stress (1-10)" stroke="var(--color-secondary)" strokeWidth={2} dot={{ r: 3 }} connectNulls />
+              </ComposedChart>
+            </ResponsiveContainer>
           </div>
         </section>
 
@@ -131,7 +160,7 @@ export default function AnalyticsPage() {
               <p>No check-ins yet. Log one from the Tools tab to start your timeline.</p>
             </div>
           ) : (
-            <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+            <div className="progress-timeline">
               <div className="timeline-line" />
               {checkIns.map((entry, i) => {
                 const color = entry.anxietyLevel <= 3 ? 'var(--color-primary)' : entry.anxietyLevel <= 6 ? 'var(--color-tertiary)' : 'var(--color-secondary)';
@@ -142,7 +171,7 @@ export default function AnalyticsPage() {
                     <div style={{ background: 'var(--color-surface-container-lowest)', borderRadius: 'var(--radius-md)', padding: '1rem', boxShadow: 'var(--shadow-card)', marginBottom: '1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
                         <div style={{ fontSize: '18px' }}>{entry.moodIcon}</div>
-                        <div style={{ flex: 1 }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
                           <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>{entry.mood} {'\u00b7'} {entry.anxietyLevel}/10</h4>
                           <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-outline)' }}>
                             {formatEntryDate(entry.timestamp)}, {formatTime(entry.timestamp)}
